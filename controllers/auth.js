@@ -14,13 +14,12 @@ export const register = async (req, res, next) =>{
 
 
       const newUser= new User({
-         username:req.body.username,
-         email:req.body.email,
+         ...req.body,
          password:hash,
       })
 
       await newUser.save();
-      res.status(200).send("user has been craetaed ");
+      res.status(200).json({"data":"User has created"});
    }
    catch(err){
        next(err);
@@ -52,7 +51,7 @@ export const login = async (req, res, next) =>{
         cookie("access_token", token,{
             httpOnly: true,
           })
-        .status(200).json({...otherDetails});
+        .status(200).json({ details: { ...otherDetails }, isAdmin });
         
     }
     catch(err){
